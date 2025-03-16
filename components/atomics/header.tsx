@@ -3,6 +3,7 @@ import Logo from "@/assets/logo.svg";
 import NextLink from "next/link";
 import { Button } from "../ui/button";
 import { Wallet2Icon } from "lucide-react";
+import WalletConnectBtn from "./connect-btn";
 // import { siteConfig } from "@/config/site";
 
 const Header = () => {
@@ -16,9 +17,10 @@ const Header = () => {
           </p>
         </NextLink>
         <div className="flex items-center gap-4">
-          <Button className="flex items-center gap-2">
+          {/* <Button className="flex items-center gap-2">
             <Wallet2Icon /> Connect Wallet
-          </Button>
+          </Button> */}
+          <WalletConnectBtn />
           <Button>Join</Button>
         </div>
       </div>
