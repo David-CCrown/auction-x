@@ -274,4 +274,10 @@
   blockquote {
     font-family: var(--font-accent);
   }
+
+  .slanted-gradient {
+    width: 70%;
+    height: 4rem;
+    @apply bg-gradient-to-r from-[#1e58fc] via-[#a427eb] via-[#d914e4] via-[#e10fa3] to-[#f10419] transition-opacity duration-500 absolute inset-0;
+  }
 }
