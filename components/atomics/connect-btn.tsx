@@ -10,6 +10,7 @@ import {
 } from "wagmi";
 import { Button } from "../ui/button";
 import { Wallet2Icon } from "lucide-react";
+import { toast } from "react-toastify";
 
 const WalletConnectBtn = () => {
   const { connect, connectors } = useConnect();
@@ -18,9 +19,21 @@ const WalletConnectBtn = () => {
   if (isConnected) {
     return <Account />;
   }
+
+  const handleConnect = ({ connector }: { connector: any }) => {
+    try {
+      connect({ connector });
+    } catch (error: any) {
+      toast.error(error?.message);
+      console.log("Connection Error: ", error);
+    }
+  };
+
   return (
     <Button
-      onClick={() => connect({ connector: connectors[0] })}
+      className="cursor-pointer"
+      title="Connect Your wallet to login"
+      onClick={() => handleConnect({ connector: connectors[0] })}
       key={connectors[0].uid}
     >
       <Wallet2Icon />
@@ -40,8 +53,19 @@ const Account = () => {
   return (
     <div>
       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
-      {address && <div>{ensName ? `${ensName} (${address})` : address}</div>}
-      <Button onClick={() => disconnect()}>Disconnect</Button>
+      {address && (
+        <div>{ensName ? `${ensName} (${address.substring(10)})` : address}</div>
+      )}
+      <Button
+        className="cursor-pointer"
+        onClick={() => {
+          disconnect();
+          localStorage.removeItem("wagmi.store");
+          sessionStorage.removeItem("wagmi.store");
+        }}
+      >
+        Disconnect
+      </Button>
     </div>
   );
 };
