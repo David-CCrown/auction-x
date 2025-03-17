@@ -48,8 +48,6 @@
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "@walletconnect/core": "^2.19.1",
-    "@walletconnect/utils": "^2.19.1",
     "axios": "^1.8.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
