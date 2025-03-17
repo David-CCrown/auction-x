@@ -4,10 +4,27 @@ import { StarsIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { BentoGrid, BentoGridItem } from "../acer/bento-grid";
+import { AppleCarousel } from "../acer/apple-cards-carousel";
+import { Card, CardContent } from "../ui/card";
 
 const AccreditedCategories = () => {
   const categories = ["Digital Assets", "Collectibles"];
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+
+  const data = [1, 2, 3];
+
+  const cards = data.map((card, index) => (
+    <div className="w-[70vw]" key={index}>
+      <Card>
+        <CardContent>
+          <BentoGrid className="md:auto-rows-[20rem]">
+            <BentoGridItem className="w-full">Hello</BentoGridItem>
+            <BentoGridItem className="w-full">Hello</BentoGridItem>
+          </BentoGrid>
+        </CardContent>
+      </Card>
+    </div>
+  ));
 
   return (
     <div className="w-[85%] py-8 mx-auto mt-8">
@@ -34,9 +51,7 @@ const AccreditedCategories = () => {
         </section>
       </div>
       <div className="mt-12">
-        <BentoGrid>
-          <BentoGridItem>Hello</BentoGridItem>
-        </BentoGrid>
+        <AppleCarousel items={cards} />
       </div>
     </div>
   );
