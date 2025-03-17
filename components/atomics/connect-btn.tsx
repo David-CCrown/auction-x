@@ -29,12 +29,23 @@ const WalletConnectBtn = () => {
     }
   };
 
+  //   return (
+  //     <div className="flex flex-col">
+  //       {connectors.map((connector) => {
+  //         <Button
+  //           onClick={() => connector({ connector })}
+  //           key={connector.uid}
+  //         ></Button>;
+  //       })}
+  //     </div>
+  //   );
+
   return (
     <Button
       className="cursor-pointer"
       title="Connect Your wallet to login"
-      onClick={() => handleConnect({ connector: connectors[0] })}
-      key={connectors[0].uid}
+      onClick={() => handleConnect({ connector: connectors[1] })}
+      key={connectors[1].uid}
     >
       <Wallet2Icon />
       Connect Wallet

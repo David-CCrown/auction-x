@@ -6,7 +6,7 @@ const projectId = process.env.PROJECT_ID!;
 
 const walletConfig = createConfig({
   chains: [mainnet, sepolia],
-  connectors: [injected()],
+  connectors: [injected(), metaMask()],
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
