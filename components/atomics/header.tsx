@@ -8,10 +8,12 @@ import { LockIcon } from "lucide-react";
 import PassPrivateAuction from "./pass-private-auction";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { useSession, signIn, signOut } from "next-auth/react";
 // import { siteConfig } from "@/config/site";
 
 const Header = () => {
-  const loggedIn = true;
+  const { data: session, status } = useSession();
+  const loggedIn = session ? true : false;
 
   return (
     <header className="">
@@ -24,7 +26,7 @@ const Header = () => {
         </NextLink>
         <div className="flex items-center">
           {loggedIn ? (
-            <Authenticated />
+            <Authenticated user={session?.user} />
           ) : (
             <NextLink href="/auth">
               <Button className="flex items-center gap-2 font-[600] text-accent-foreground fading-bg-gradient cursor-pointer">
@@ -40,7 +42,7 @@ const Header = () => {
   );
 };
 
-const Authenticated = () => {
+const Authenticated = ({ user }: { user: any }) => {
   return (
     <>
       <div className="pr-4 mr-4 border-r">
@@ -49,7 +51,7 @@ const Authenticated = () => {
       <Dialog>
         <DialogTrigger asChild>
           <Avatar className="cursor-pointer">
-            <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+            <AvatarImage src={`${user?.image}`} />
             <AvatarFallback></AvatarFallback>
           </Avatar>
         </DialogTrigger>
@@ -57,14 +59,17 @@ const Authenticated = () => {
           <div className="p-4">
             <div className="flex items-center gap-4 pb-2 border-b">
               <Avatar>
-                <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+                <AvatarImage src={`${user?.image}`} />
                 <AvatarFallback></AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-[600]">John Doe</p>
+                <p className="font-[600]">{user?.name}</p>
                 <p className="text-accent-foreground"></p>
               </div>
             </div>
+            <Button className="mt-4" onClick={() => signOut()}>
+              Sign out
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
