@@ -1,82 +1,148 @@
+// "use client";
+
+// import {
+//   useAccount,
+//   useDisconnect,
+//   useEnsAvatar,
+//   useEnsName,
+//   useConnect,
+//   Connector,
+// } from "wagmi";
+// import { Button } from "../ui/button";
+// import { Wallet2Icon } from "lucide-react";
+// import { toast } from "react-toastify";
+
+// const WalletConnectBtn = () => {
+//   const { connect, connectors } = useConnect();
+//   const { isConnected } = useAccount();
+
+//   if (isConnected) {
+//     return <Account />;
+//   }
+
+//   const handleConnect = ({ connector }: { connector: any }) => {
+//     try {
+//       connect({ connector });
+//     } catch (error: any) {
+//       toast.error(error?.message);
+//       console.log("Connection Error: ", error);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       {connectors.map((connector) => (
+//         <Button key={connector.uid} onClick={() => connect({ connector })}>
+//           <Wallet2Icon />
+//           Connect with {connector.name}
+//         </Button>
+//       ))}
+
+//       {/* Fallback for no wallets detected */}
+
+//     </div>
+//   );
+
+//   //   return (
+//   //     <Button
+//   //       className="cursor-pointer"
+//   //       title="Connect Your wallet to login"
+//   //       onClick={() => handleConnect({ connector: connectors[1] })}
+//   //       key={connectors[1].uid}
+//   //     >
+//   //       <Wallet2Icon />
+//   //       Connect Wallet
+//   //     </Button>
+//   //   );
+// };
+
+// export default WalletConnectBtn;
+
+// const Account = () => {
+//   const { address } = useAccount();
+//   const { disconnect } = useDisconnect();
+//   const { data: ensName } = useEnsName({ address });
+//   const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
+
+//   return (
+//     <div>
+//       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
+//       {address && (
+//         <div>{ensName ? `${ensName} (${address.substring(10)})` : address}</div>
+//       )}
+//       <Button
+//         className="cursor-pointer"
+//         onClick={() => {
+//           disconnect();
+//           localStorage.removeItem("wagmi.store");
+//           sessionStorage.removeItem("wagmi.store");
+//         }}
+//       >
+//         Disconnect
+//       </Button>
+//     </div>
+//   );
+// };
+
+// src/components/SolanaConnectButton.tsx
 "use client";
 
-import {
-  useAccount,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-  useConnect,
-  Connector,
-} from "wagmi";
+import { useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "../ui/button";
-import { Wallet2Icon } from "lucide-react";
-import { toast } from "react-toastify";
 
-const WalletConnectBtn = () => {
-  const { connect, connectors } = useConnect();
-  const { isConnected } = useAccount();
+export default function SolanaConnectButton() {
+  const { select, wallets, publicKey, connected, disconnect } = useWallet();
+  const [showWalletList, setShowWalletList] = useState(false);
 
-  if (isConnected) {
-    return <Account />;
+  if (connected && publicKey) {
+    return (
+      <div className="flex items-center gap-2">
+        <span className="text-sm">
+          {publicKey.toString().slice(0, 6)}...{publicKey.toString().slice(-4)}
+        </span>
+        <Button className="cursor-pointer" onClick={() => disconnect()}>
+          Disconnect
+        </Button>
+      </div>
+    );
   }
 
-  const handleConnect = ({ connector }: { connector: any }) => {
-    try {
-      connect({ connector });
-    } catch (error: any) {
-      toast.error(error?.message);
-      console.log("Connection Error: ", error);
-    }
-  };
-
-  //   return (
-  //     <div className="flex flex-col">
-  //       {connectors.map((connector) => {
-  //         <Button
-  //           onClick={() => connector({ connector })}
-  //           key={connector.uid}
-  //         ></Button>;
-  //       })}
-  //     </div>
-  //   );
-
+  // Custom wallet dropdown menu
   return (
-    <Button
-      className="cursor-pointer"
-      title="Connect Your wallet to login"
-      onClick={() => handleConnect({ connector: connectors[1] })}
-      key={connectors[1].uid}
-    >
-      <Wallet2Icon />
-      Connect Wallet
-    </Button>
-  );
-};
-
-export default WalletConnectBtn;
-
-const Account = () => {
-  const { address } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { data: ensName } = useEnsName({ address });
-  const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
-
-  return (
-    <div>
-      {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
-      {address && (
-        <div>{ensName ? `${ensName} (${address.substring(10)})` : address}</div>
-      )}
+    <div className="relative">
       <Button
         className="cursor-pointer"
-        onClick={() => {
-          disconnect();
-          localStorage.removeItem("wagmi.store");
-          sessionStorage.removeItem("wagmi.store");
-        }}
+        onClick={() => setShowWalletList(!showWalletList)}
       >
-        Disconnect
+        Connect Wallet
       </Button>
+
+      {showWalletList && (
+        <div className="absolute top-full mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg p-2 z-10 min-w-[200px]">
+          {wallets.map((wallet) => (
+            <div
+              key={wallet.adapter.name}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center"
+              onClick={() => {
+                select(wallet.adapter.name);
+                setShowWalletList(false);
+              }}
+            >
+              {wallet.adapter.icon && (
+                <img
+                  src={wallet.adapter.icon}
+                  alt={`${wallet.adapter.name} icon`}
+                  width={24}
+                  height={24}
+                  className="mr-2"
+                />
+              )}
+              {wallet.adapter.name}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
-};
+}
