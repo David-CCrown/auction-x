@@ -90,6 +90,15 @@
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "../ui/button";
+import { WalletIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogOverlay,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export default function SolanaConnectButton() {
   const { select, wallets, publicKey, connected, disconnect } = useWallet();
@@ -111,19 +120,32 @@ export default function SolanaConnectButton() {
   // Custom wallet dropdown menu
   return (
     <div className="relative">
-      <Button
-        className="cursor-pointer"
-        onClick={() => setShowWalletList(!showWalletList)}
-      >
-        Connect Wallet
-      </Button>
+      <Dialog>
+        <DialogOverlay className="z-[999]" />
+        <DialogTrigger asChild>
+          <Button
+            className="font-[600] text-accent-foreground bg-gradient cursor-pointer"
+            // onClick={() => setShowWalletList(!showWalletList)}
+          >
+            <WalletIcon />
+            <span className="hidden lg:inline-block">Connect Wallet</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="z-[999] bg-card/70 backdrop-blur-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">
+              Connect Wallet
+            </DialogTitle>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
 
-      {showWalletList && (
+      {/* {showWalletList && (
         <div className="absolute top-full mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg p-2 z-10 min-w-[200px]">
           {wallets.map((wallet) => (
             <div
               key={wallet.adapter.name}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center"
+              className="flex items-center p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
               onClick={() => {
                 select(wallet.adapter.name);
                 setShowWalletList(false);
@@ -142,7 +164,7 @@ export default function SolanaConnectButton() {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 }

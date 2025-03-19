@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
@@ -11,6 +12,7 @@ import {
 const PassPrivateAuction = () => {
   return (
     <Dialog modal>
+      <DialogOverlay className="z-[999]" />
       <DialogTrigger asChild>
         <Button variant="outline">
           <IconBrandHackerrank /> Private Auction

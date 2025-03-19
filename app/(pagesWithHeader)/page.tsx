@@ -1,4 +1,3 @@
-import Header from "@/components/atomics/header";
 import AccreditedCategories from "@/components/system/accredited-categories";
 import Footer from "@/components/system/footer";
 import Hero from "@/components/system/hero";
@@ -10,10 +9,7 @@ import OurProcess from "@/components/system/our-process";
 export default function Home() {
   return (
     <div>
-      <div className="relative">
-        <Header />
-        <Hero />
-      </div>
+      <Hero />
       <HeroPartners />
       <LandingUpcomingAuctions />
       <OurProcess />
