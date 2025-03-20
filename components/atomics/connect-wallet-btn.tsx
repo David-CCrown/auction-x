@@ -88,9 +88,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "../ui/button";
-import { WalletIcon } from "lucide-react";
+import { ArrowRight, WalletIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -101,21 +102,32 @@ import {
 } from "../ui/dialog";
 
 export default function SolanaConnectButton() {
-  const { select, wallets, publicKey, connected, disconnect } = useWallet();
+  // const { select, wallets, publicKey, connected, disconnect } = useWallet();
   const [showWalletList, setShowWalletList] = useState(false);
 
-  if (connected && publicKey) {
-    return (
-      <div className="flex items-center gap-2">
-        <span className="text-sm">
-          {publicKey.toString().slice(0, 6)}...{publicKey.toString().slice(-4)}
-        </span>
-        <Button className="cursor-pointer" onClick={() => disconnect()}>
-          Disconnect
-        </Button>
-      </div>
-    );
-  }
+  // if (connected && publicKey) {
+  //   return (
+  //     <div className="flex items-center gap-2">
+  //       <span className="text-sm">
+  //         {publicKey.toString().slice(0, 6)}...{publicKey.toString().slice(-4)}
+  //       </span>
+  //       <Button className="cursor-pointer" onClick={() => disconnect()}>
+  //         Disconnect
+  //       </Button>
+  //     </div>
+  //   );
+  // }
+
+  const wallets = [
+    {
+      label: "Metamask",
+      key: "metamask",
+    },
+    {
+      label: "Phantom",
+      key: "phantom",
+    },
+  ];
 
   // Custom wallet dropdown menu
   return (
@@ -131,12 +143,25 @@ export default function SolanaConnectButton() {
             <span className="hidden lg:inline-block">Connect Wallet</span>
           </Button>
         </DialogTrigger>
-        <DialogContent className="z-[999] bg-card/70 backdrop-blur-md">
+        <DialogContent className="z-[999] bg-card/80 backdrop-blur-md">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">
               Connect Wallet
             </DialogTitle>
           </DialogHeader>
+          <div className="mt-4 grid grid-cols-1 divide-y">
+            {wallets.map(({ label, key }) => (
+              <div className="flex items-center justify-between py-2" key={key}>
+                <h3 className="text-lg">{label}</h3>
+                <Link href="/">
+                  <Button className="text-base" variant="link">
+                    Install
+                    <ArrowRight />
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </div>
         </DialogContent>
       </Dialog>
 

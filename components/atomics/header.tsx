@@ -28,6 +28,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
+import CreateNewBtn from "./create-new-btn";
 // import { siteConfig } from "@/config/site";
 
 const Header = () => {
@@ -116,13 +117,14 @@ const MobileSidebar = () => {
   );
 };
 
-const Authenticated = ({ user }: { user: any }) => {
+export const Authenticated = ({ user }: { user: any }) => {
   return (
     <>
       <div className="flex items-center gap-4 pr-4 mr-4 border-r">
-        <div className="hidden lg:block">
+        {/* <div className="hidden lg:block">
           <PassPrivateAuction />
-        </div>
+        </div> */}
+        <CreateNewBtn />
         <SolanaConnectButton />
       </div>
 
