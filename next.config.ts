@@ -7,8 +7,10 @@ const nextConfig: NextConfig = {
       {
         hostname: "images.unsplash.com",
       },
+      {
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
-    // domains: ["images.unsplash.com"],
   },
 };
 

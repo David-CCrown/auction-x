@@ -1,3 +1,5 @@
+import { DiamondIcon, SettingsIcon, UserIcon } from "lucide-react";
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -14,26 +16,36 @@ export const siteConfig = {
       href: "https://medium.com",
     },
   ],
+  userProfileItems: [
+    {
+      label: "Profile",
+      icon: UserIcon,
+      href: "/profile",
+    },
+    {
+      label: "Assets",
+      icon: DiamondIcon,
+      href: "/assets",
+    },
+
+    {
+      label: "Settings",
+      icon: SettingsIcon,
+      href: "/settings",
+    },
+  ],
   navItems: [
     {
-      label: "Home",
-      href: "/",
+      label: "Auctions",
+      href: "/auctions",
     },
     {
-      label: "Docs",
-      href: "/docs",
+      label: "Marketplace",
+      href: "/marketplace",
     },
     {
-      label: "Pricing",
-      href: "/pricing",
-    },
-    {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
+      label: "Familia",
+      href: "/familia",
     },
   ],
   //  navMenuItemsWaitlist: [

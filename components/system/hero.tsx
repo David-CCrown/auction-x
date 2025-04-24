@@ -4,6 +4,10 @@ import HeroStats from "./hero-stats";
 import { AnimatedTestimonials } from "../acer/animated-card-show";
 import { heroTestimonials } from "@/config/site";
 import { Spotlight } from "../acer/spotlight";
+import Link from "next/link";
+import Image from "next/image";
+import SonicLogo from "@/assets/sonic1718716387929.png";
+import SolanaLogo from "@/assets/solana-sol-logo.png";
 
 const Hero = () => {
   return (
@@ -19,13 +23,35 @@ const Hero = () => {
               <StarsIcon size={20} />
               Best Auctions
             </div>
-            <h1 className="text-[3rem] lg:text-[4rem] font-[700] leading-12  lg:leading-16">
+            <h1 className="text-[2.4rem] lg:text-[3rem] font-[700] leading-10 lg:leading-12">
               Unleash True Digital Value in Blockchain Auctions
             </h1>
             <p>
               Bid with confidence on a blockchain-powered marketplace, ensuring
               fairness, security, and real-time transactions.
             </p>
+            {/* <div className="flex items-center gap-4 font-bold py-6 border-y">
+              Powered by
+              <Link className="flex items-center gap-1" href="">
+                <Image
+                  alt="solana logo"
+                  src={SolanaLogo}
+                  width={20}
+                  height={20}
+                />
+                <span>Solana</span>
+              </Link>
+              {" +  "}
+              <Link className="flex items-center gap-1" href="">
+                <Image
+                  alt="sonic logo"
+                  src={SonicLogo}
+                  width={20}
+                  height={20}
+                />
+                <span>Sonic</span>
+              </Link>
+            </div> */}
             <div className="flex items-center gap-4">
               <Button className="" variant="default">
                 Explore Collections
