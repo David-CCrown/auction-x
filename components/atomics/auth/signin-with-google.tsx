@@ -9,7 +9,7 @@ const SignInWithGoogle = () => {
     <Button
       className="w-full text-lg font-bold"
       size="lg"
-      onClick={() => signIn()}
+      onClick={async () => await signIn("google", { callbackUrl: "/" })}
     >
       <IconBrandGoogle />
       Continue with Google

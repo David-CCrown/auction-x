@@ -1,25 +1,3 @@
-// "use client";
-// import { http, createConfig } from "wagmi";
-// import { mainnet, sepolia } from "wagmi/chains";
-// import { injected, metaMask, safe, walletConnect } from "wagmi/connectors";
-
-// const projectId = process.env.PROJECT_ID || "";
-
-// console.log({ projectId });
-
-// const walletConfig = createConfig({
-//   chains: [mainnet, sepolia],
-//   connectors: [injected(), metaMask(), walletConnect({ projectId }), safe()],
-//   transports: {
-//     [mainnet.id]: http(),
-//     [sepolia.id]: http(),
-//   },
-// });
-
-// export default walletConfig;
-
-// src/context/SolanaWalletProvider.tsx
-// src/context/SolanaWalletProvider.tsx
 "use client";
 
 import { FC, ReactNode, useMemo } from "react";
@@ -39,7 +17,7 @@ import {
 
 // Rename the component to avoid conflicts
 const SolanaProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const network = WalletAdapterNetwork.Mainnet;
+  const network = WalletAdapterNetwork.Devnet
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
   const wallets = useMemo(
@@ -49,7 +27,7 @@ const SolanaProvider: FC<{ children: ReactNode }> = ({ children }) => {
       new AlphaWalletAdapter(),
       new BitgetWalletAdapter(),
     ],
-    []
+    [network]
   );
 
   // Use the renamed imports to be more explicit

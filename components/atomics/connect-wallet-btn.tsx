@@ -1,93 +1,6 @@
-// "use client";
-
-// import {
-//   useAccount,
-//   useDisconnect,
-//   useEnsAvatar,
-//   useEnsName,
-//   useConnect,
-//   Connector,
-// } from "wagmi";
-// import { Button } from "../ui/button";
-// import { Wallet2Icon } from "lucide-react";
-// import { toast } from "react-toastify";
-
-// const WalletConnectBtn = () => {
-//   const { connect, connectors } = useConnect();
-//   const { isConnected } = useAccount();
-
-//   if (isConnected) {
-//     return <Account />;
-//   }
-
-//   const handleConnect = ({ connector }: { connector: any }) => {
-//     try {
-//       connect({ connector });
-//     } catch (error: any) {
-//       toast.error(error?.message);
-//       console.log("Connection Error: ", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       {connectors.map((connector) => (
-//         <Button key={connector.uid} onClick={() => connect({ connector })}>
-//           <Wallet2Icon />
-//           Connect with {connector.name}
-//         </Button>
-//       ))}
-
-//       {/* Fallback for no wallets detected */}
-
-//     </div>
-//   );
-
-//   //   return (
-//   //     <Button
-//   //       className="cursor-pointer"
-//   //       title="Connect Your wallet to login"
-//   //       onClick={() => handleConnect({ connector: connectors[1] })}
-//   //       key={connectors[1].uid}
-//   //     >
-//   //       <Wallet2Icon />
-//   //       Connect Wallet
-//   //     </Button>
-//   //   );
-// };
-
-// export default WalletConnectBtn;
-
-// const Account = () => {
-//   const { address } = useAccount();
-//   const { disconnect } = useDisconnect();
-//   const { data: ensName } = useEnsName({ address });
-//   const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
-
-//   return (
-//     <div>
-//       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
-//       {address && (
-//         <div>{ensName ? `${ensName} (${address.substring(10)})` : address}</div>
-//       )}
-//       <Button
-//         className="cursor-pointer"
-//         onClick={() => {
-//           disconnect();
-//           localStorage.removeItem("wagmi.store");
-//           sessionStorage.removeItem("wagmi.store");
-//         }}
-//       >
-//         Disconnect
-//       </Button>
-//     </div>
-//   );
-// };
-
-// src/components/SolanaConnectButton.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "../ui/button";
@@ -100,34 +13,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { WalletReadyState } from "@solana/wallet-adapter-base";
 
 export default function SolanaConnectButton() {
-  // const { select, wallets, publicKey, connected, disconnect } = useWallet();
-  const [showWalletList, setShowWalletList] = useState(false);
+  const { wallets, connect, disconnect, connecting, select, connected } =
+    useWallet();
 
-  // if (connected && publicKey) {
-  //   return (
-  //     <div className="flex items-center gap-2">
-  //       <span className="text-sm">
-  //         {publicKey.toString().slice(0, 6)}...{publicKey.toString().slice(-4)}
-  //       </span>
-  //       <Button className="cursor-pointer" onClick={() => disconnect()}>
-  //         Disconnect
-  //       </Button>
-  //     </div>
-  //   );
-  // }
+  const [isClient, setIsClient] = useState(false);
 
-  const wallets = [
-    {
-      label: "Metamask",
-      key: "metamask",
-    },
-    {
-      label: "Phantom",
-      key: "phantom",
-    },
-  ];
+  // To avoid hydration mismatch
+  useEffect(() => setIsClient(true), []);
+
+  const handleWalletSelect = async (walletName: any) => {
+    try {
+      select(walletName);
+      await connect();
+    } catch (error) {
+      console.error("Error Connecting Wallet:", error);
+    }
+  };
 
   // Custom wallet dropdown menu
   return (
@@ -150,46 +54,42 @@ export default function SolanaConnectButton() {
             </DialogTitle>
           </DialogHeader>
           <div className="mt-4 grid grid-cols-1 divide-y">
-            {wallets.map(({ label, key }) => (
-              <div className="flex items-center justify-between py-2" key={key}>
-                <h3 className="text-lg">{label}</h3>
-                <Link href="/">
-                  <Button className="text-base" variant="link">
-                    Install
-                    <ArrowRight />
+            {wallets.map((wallet) => (
+              <div
+                className="flex items-center justify-between py-2"
+                key={wallet.adapter.name}
+              >
+                <div className="flex">
+                  <img
+                    src={wallet.adapter.icon}
+                    alt={wallet.adapter.name}
+                    className="w-6 h-6 mr-3"
+                  />
+                  <h3 className="text-lg">{wallet.adapter.name}</h3>
+                </div>
+                {wallet.readyState !== WalletReadyState.Installed ? (
+                  <Link href={wallet.adapter.url} target="_blank">
+                    <Button className="text-base cursor-pointer" variant="link">
+                      Install
+                      <ArrowRight />
+                    </Button>
+                  </Link>
+                ) : connected && wallet.adapter.connected ? (
+                  <Button className="text-green-400">Connected</Button>
+                ) : (
+                  <Button
+                    onClick={() => handleWalletSelect(wallet.adapter.name)}
+                    className="cursor-pointer"
+                    disabled={connected}
+                  >
+                    Connect
                   </Button>
-                </Link>
+                )}
               </div>
             ))}
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* {showWalletList && (
-        <div className="absolute top-full mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg p-2 z-10 min-w-[200px]">
-          {wallets.map((wallet) => (
-            <div
-              key={wallet.adapter.name}
-              className="flex items-center p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-              onClick={() => {
-                select(wallet.adapter.name);
-                setShowWalletList(false);
-              }}
-            >
-              {wallet.adapter.icon && (
-                <img
-                  src={wallet.adapter.icon}
-                  alt={`${wallet.adapter.name} icon`}
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-              )}
-              {wallet.adapter.name}
-            </div>
-          ))}
-        </div>
-      )} */}
     </div>
   );
 }

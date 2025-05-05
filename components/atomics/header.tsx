@@ -49,7 +49,7 @@ const Header = () => {
           <Nav />
         </div>
         <div className="flex items-center">
-          {!loggedIn ? (
+          {loggedIn ? (
             <Authenticated user={session?.user} />
           ) : (
             <NextLink href="/auth">
@@ -58,7 +58,6 @@ const Header = () => {
               </Button>
             </NextLink>
           )}
-
           {/* <Button>Join</Button> */}
         </div>
       </div>
