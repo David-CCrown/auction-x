@@ -3,7 +3,7 @@
 import { FC, ReactNode, useMemo } from "react";
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-// Import these with "as" to be clear they are React components
+
 import {
   ConnectionProvider as SolanaConnectionProvider,
   WalletProvider as SolanaWalletProvider,
@@ -17,7 +17,7 @@ import {
 
 // Rename the component to avoid conflicts
 const SolanaProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const network = WalletAdapterNetwork.Devnet
+  const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
   const wallets = useMemo(
@@ -27,7 +27,7 @@ const SolanaProvider: FC<{ children: ReactNode }> = ({ children }) => {
       new AlphaWalletAdapter(),
       new BitgetWalletAdapter(),
     ],
-    [network]
+    [network],
   );
 
   // Use the renamed imports to be more explicit
