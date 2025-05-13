@@ -4,7 +4,9 @@ import { ErrorMessage } from "../(dtos)/generic";
 
 export async function GET(req: Request) {
   try {
-    const { data, error, status } = await supabase.from("auction").select("*");
+    const { data, error, status } = await supabase
+      .from("auction_house")
+      .select("*");
     if (error) {
       return NextResponse.json({ error }, { status });
     }
@@ -16,17 +18,18 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-
+    const createBody = await req.json();
     const { data, error, status } = await supabase
-      .from("auction")
-      .insert([{ ...body }])
-      .select();
-
+      .from("auction_house")
+      .insert([{ ...createBody }])
+      .select("*");
     if (error) {
       return NextResponse.json({ error }, { status });
     }
-    return NextResponse.json({ data, message: "Auction Added Successfully!!" });
+    return NextResponse.json({
+      data,
+      message: "Auction House Created Successfully!!",
+    });
   } catch (error) {
     return NextResponse.json({ error, message: ErrorMessage }, { status: 500 });
   }
