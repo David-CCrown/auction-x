@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema: Schema = new mongoose.Schema({
   walletAddress: {
     type: String,
     unique: true,

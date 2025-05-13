@@ -5,7 +5,7 @@ import Logo from "@/assets/logo.svg";
 import NextLink from "next/link";
 import { Button } from "../ui/button";
 import { LockIcon, LogOutIcon, MenuIcon } from "lucide-react";
-import PassPrivateAuction from "./pass-private-auction";
+// import PassPrivateAuction from "./pass-private-auction";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   Dialog,
@@ -30,6 +30,15 @@ import {
 } from "../ui/sheet";
 import CreateNewBtn from "./create-new-btn";
 // import { siteConfig } from "@/config/site";
+
+
+interface User {
+  name: string;
+  image: string;
+  email: string;
+}
+
+
 
 const Header = () => {
   const { data: session, status } = useSession();
@@ -116,7 +125,7 @@ const MobileSidebar = () => {
   );
 };
 
-export const Authenticated = ({ user }: { user: any }) => {
+export const Authenticated = ({ user }: { user: User|undefined }) => {
   return (
     <>
       <div className="flex items-center gap-4 pr-4 mr-4 border-r">

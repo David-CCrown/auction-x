@@ -1,4 +1,4 @@
-import { ChevronDown, CoinsIcon, HouseIcon, PlusIcon } from "lucide-react";
+import { ChevronDown, CoinsIcon, DiamondPlusIcon, HouseIcon, PlusIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import React from "react";
@@ -17,6 +17,12 @@ const CreateNewBtn = () => {
       key: "auction",
       icon: CoinsIcon,
       href: "/new/auction",
+    },
+    {
+      label: "Item",
+      key: "item",
+      icon: DiamondPlusIcon,
+      href: "/new/item",
     },
   ];
 

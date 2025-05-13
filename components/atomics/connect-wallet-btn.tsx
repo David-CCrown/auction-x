@@ -27,7 +27,7 @@ export default function SolanaConnectButton() {
   // To avoid hydration mismatch
   useEffect(() => setIsClient(true), []);
 
-  const handleWalletSelect = async (walletName: any) => {
+  const handleWalletSelect = async (walletName: WalletName) => {
     try {
       await select(walletName);
       await connect();
