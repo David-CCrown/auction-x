@@ -6,14 +6,15 @@ import { NextResponse } from "next/server";
 import supabase from "@/config/supabase";
 
 export async function POST(req: Request) {
-  const { userDto } = req.body as any;
-  const { data, error } = await supabase
+  const body = await req.json();
+
+  const { data, error, status } = await supabase
     .from("user")
-    .insert([{ ...userDto }])
+    .insert([{ ...body }])
     .select();
 
   if (error) {
-    return NextResponse.json({ error });
+    return NextResponse.json({ error }, { status });
   }
   return NextResponse.json({ data });
 }
